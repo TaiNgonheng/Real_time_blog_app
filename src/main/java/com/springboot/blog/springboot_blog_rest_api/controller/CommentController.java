@@ -8,13 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.yaml.snakeyaml.tokens.CommentToken;
 
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
-@NoArgsConstructor
 @RequestMapping("api/comment")
 public class CommentController {
 
@@ -32,4 +29,13 @@ public class CommentController {
         List<CommentDto> getAllComment = commentService.getAllComment(postId);
         return ResponseEntity.ok(getAllComment);
     }
+
+    @GetMapping("{postId}/{id}")
+    public ResponseEntity<CommentDto> getCommentWithPostId(@PathVariable("postId") Long postId,
+                                                           @PathVariable("id") Long commentId){
+        CommentDto commentDto = commentService.getCommentByPostId(postId, commentId);
+        return ResponseEntity.ok(commentDto);
+    }
+
+
 }
