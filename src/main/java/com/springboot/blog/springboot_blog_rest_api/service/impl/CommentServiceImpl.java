@@ -25,9 +25,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto createComment(Long postId, CommentDto commentDto) {
-        //take post by ID
-        Comment comment = CommentMapper.mapToComment(commentDto);
 
+        Comment comment = CommentMapper.mapToComment(commentDto);
+        //take post by ID
         Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("this post with this Id are not found."));
         //set post to Comment Entity
         comment.setPost(post);
@@ -43,17 +43,40 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto getCommentByPostId(Long postId, Long commentId) {
-
         // retrieve post with post id from database by
         Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("This post with ID are not exist.!"));
-
         // retrieve comment with id
         Comment findComment = commentRepository.findById(commentId).orElseThrow(()-> new RuntimeException("This Comment Id are not exist."));
-
         //Check Comment
         if (!findComment.getPost().getId().equals(post.getId())){
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belong to post");
         }
         return CommentMapper.mapToCommentDto(findComment);
+    }
+        //Update Comment by take PostId and CommentId
+    @Override
+    public CommentDto updateCommentById(Long postId, Long commentId, CommentDto commentDto) {
+        //take post by postId from post repository
+        Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("This post with with this Id are not exist."));
+        //take comment by commentId from commentRepository
+        Comment findComment = commentRepository.findById(commentId).orElseThrow(()-> new RuntimeException("This Comment with this Id are not Exist."));
+        if (!findComment.getPost().getId().equals(post.getId())){
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST,"Comment are not belong to post.");
+        }
+        findComment.setName(commentDto.getName());
+        findComment.setEmail(commentDto.getEmail());
+        findComment.setBody(commentDto.getBody());
+        Comment comment = commentRepository.save(findComment);
+        return CommentMapper.mapToCommentDto(comment);
+    }
+
+    @Override
+    public void deleteCommentById(Long postId, Long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("This post with this Id are not exis."));
+        Comment findComment = commentRepository.findById(commentId).orElseThrow(()-> new RuntimeException("this commment with chis Id are not exist."));
+        if (!findComment.getPost().getId().equals(post.getId())){
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST,"Comment are not belong in the post");
+        }
+        commentRepository.delete(findComment);
     }
 }
