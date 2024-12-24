@@ -2,6 +2,10 @@ package com.springboot.blog.springboot_blog_rest_api.dto;
 
 import lombok.*;
 
+import java.util.Set;
+
+@Getter
+@Setter
 @Data
 @NoArgsConstructor
 public class PostDto {
@@ -9,12 +13,14 @@ public class PostDto {
     private String title;
     private String description;
     private String content;
+    private Set<CommentDto> comments;
 
-    public PostDto(Long id, String title, String description, String content) {
+    public PostDto(Long id, String title, String description, String content, Set<CommentDto> comments) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.content = content;
+        this.comments = comments;
     }
 
     public Long getId() {
@@ -47,5 +53,13 @@ public class PostDto {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Set<CommentDto> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<CommentDto> comments) {
+        this.comments = comments;
     }
 }
