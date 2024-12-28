@@ -4,9 +4,11 @@ import com.springboot.blog.springboot_blog_rest_api.dto.PostDto;
 import com.springboot.blog.springboot_blog_rest_api.dto.PostResponse;
 import com.springboot.blog.springboot_blog_rest_api.service.PostService;
 import com.springboot.blog.springboot_blog_rest_api.util.AppConstants;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +18,7 @@ public class PostController {
     private PostService postService;
 
     @PostMapping("/Create")
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
+    public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
         PostDto create = postService.createPost(postDto);
         return new ResponseEntity<>(create, HttpStatus.CREATED);
     }
@@ -39,7 +41,7 @@ public class PostController {
     }
 
     @PutMapping("update/{id}")
-    public ResponseEntity<PostDto> updatePost(@PathVariable("id") Long postId,@RequestBody PostDto postDto){
+    public ResponseEntity<PostDto> updatePost(@PathVariable("id") Long postId,@Valid @RequestBody PostDto postDto){
         PostDto updatePost = postService.updatePost(postId,postDto);
         return new ResponseEntity<>(updatePost,HttpStatus.OK);
     }
