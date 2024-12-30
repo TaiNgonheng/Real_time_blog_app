@@ -1,5 +1,8 @@
 package com.springboot.blog.springboot_blog_rest_api.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +13,15 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommentDto {
     private Long id;
+    // name should not be null and empty
+    @NotEmpty(message = "Name should not be null or empty")
     private String name;
+    //email field
+    @NotEmpty(message = "email should not be null or empty")
+    @Email
     private String email;
+    @NotEmpty
+    @Size(min = 10,message = "comment body should not be null or empty.")
     private String body;
 
     public CommentDto(Long id, String name, String email, String body) {

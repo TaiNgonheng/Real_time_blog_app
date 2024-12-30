@@ -2,6 +2,7 @@ package com.springboot.blog.springboot_blog_rest_api.controller;
 
 import com.springboot.blog.springboot_blog_rest_api.dto.CommentDto;
 import com.springboot.blog.springboot_blog_rest_api.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class CommentController {
     private CommentService commentService;
 
     @PostMapping("create/{id}")
-    public ResponseEntity<CommentDto> createComment(@PathVariable("id") Long postId, @RequestBody CommentDto commentDto){
+    public ResponseEntity<CommentDto> createComment(@PathVariable("id") Long postId, @Valid @RequestBody CommentDto commentDto){
         CommentDto create = commentService.createComment(postId, commentDto);
         return new ResponseEntity<>(create, HttpStatus.CREATED);
     }
@@ -31,14 +32,13 @@ public class CommentController {
     }
 
     @GetMapping("{postId}/{id}")
-    public ResponseEntity<CommentDto> getCommentWithPostId(@PathVariable("postId") Long postId,
-                                                           @PathVariable("id") Long commentId){
+    public ResponseEntity<CommentDto> getCommentWithPostId(@PathVariable("postId") Long postId, @PathVariable("id") Long commentId){
         CommentDto commentDto = commentService.getCommentByPostId(postId, commentId);
         return ResponseEntity.ok(commentDto);
     }
 
     @PutMapping("update/{postId}/{id}")
-    public ResponseEntity<CommentDto> updateCommentByPostId(@PathVariable Long postId, @PathVariable("id") Long commentId,@RequestBody CommentDto commentDto){
+    public ResponseEntity<CommentDto> updateCommentByPostId(@PathVariable Long postId, @PathVariable("id") Long commentId,@Valid @RequestBody CommentDto commentDto){
         CommentDto savedComment = commentService.updateCommentById(postId,commentId,commentDto);
         return ResponseEntity.ok(savedComment);
     }
