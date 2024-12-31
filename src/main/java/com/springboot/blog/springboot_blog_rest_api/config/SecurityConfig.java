@@ -1,5 +1,6 @@
 package com.springboot.blog.springboot_blog_rest_api.config;
 
+import com.springboot.blog.springboot_blog_rest_api.security.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,12 +21,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
-    @Autowired
+
     private UserDetailsService userDetailsService;
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
+        this.authenticationEntryPoint = jwtAuthenticationEntryPoint;
     }
 
     @Bean
@@ -46,8 +48,7 @@ public class SecurityConfig {
                             authorize.requestMatchers(HttpMethod.GET,"/api/**").permitAll()
                                     .requestMatchers("/api/auth/**").permitAll()
                                     .anyRequest().authenticated()
-                )
-                .httpBasic(Customizer.withDefaults());
+                );
         return http.build();
     }
 //
