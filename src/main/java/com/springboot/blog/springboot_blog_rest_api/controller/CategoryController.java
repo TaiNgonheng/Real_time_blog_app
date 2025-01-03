@@ -19,6 +19,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+//    http://localhost:8080/api/categories/add
     @PostMapping("/add")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto){
@@ -26,17 +27,20 @@ public class CategoryController {
            return new ResponseEntity<>(savedCate, HttpStatus.CREATED);
     }
 
+//  http://localhost:8080/api/blog/category/4
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getById(@PathVariable("id") Long categoryId){
         CategoryDto categoryDto = categoryService.getById(categoryId);
         return ResponseEntity.ok(categoryDto);
     }
 
+//  http://localhost:8080/api/categories/getAll
     @GetMapping("/getAll")
     public ResponseEntity<List<CategoryDto>> getALl(){
         return ResponseEntity.ok(categoryService.getAll());
     }
 
+//  http://localhost:8080/api/categories/add/2
     @PutMapping("/add/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoryDto> update(@PathVariable("id") Long categoryId, @RequestBody CategoryDto categoryDto){
@@ -44,6 +48,7 @@ public class CategoryController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+//  http://localhost:8080/api/categories/delete/2
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> delete(@PathVariable("id") Long categoryId){

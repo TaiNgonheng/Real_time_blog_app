@@ -20,6 +20,7 @@ public class AuthController {
         this.authService = authService;
     }
     //Build login rest api
+//    http://localhost:8080/api/auth/login
     @PostMapping(value = {"/login","/signin"})
     public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto){
         String token = authService.login(loginDto);
@@ -27,7 +28,7 @@ public class AuthController {
         jwtAuthResponse.setAccessToken(token);
         return ResponseEntity.ok(jwtAuthResponse);
     }
-
+//    http://localhost:8080/api/auth/signup
     @PostMapping(value = {"/register","/signup"})
     public ResponseEntity<String> register(@RequestBody RegisterDto registerDto){
        String response = authService.register(registerDto);

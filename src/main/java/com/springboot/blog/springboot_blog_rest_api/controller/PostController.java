@@ -20,6 +20,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+//    http://localhost:8080/api/blog/create/1
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/Create")
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
@@ -27,12 +28,14 @@ public class PostController {
         return new ResponseEntity<>(create, HttpStatus.CREATED);
     }
 
+//    http://localhost:8080/api/blog/get/1
     @GetMapping("/get/{id}")
     public ResponseEntity<PostDto> getPostById(@PathVariable("id") Long postId){
         PostDto postDto = postService.getById(postId);
         return ResponseEntity.ok(postDto);
     }
 
+//    http://localhost:8080/api/blog
     @GetMapping
     public ResponseEntity<PostResponse> getAll(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false)int pageNo,
@@ -44,6 +47,7 @@ public class PostController {
         return ResponseEntity.ok(postDto);
     }
 
+//  http://localhost:8080/api/blog/update/1
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<PostDto> updatePost(@PathVariable("id") Long postId,@Valid @RequestBody PostDto postDto){
@@ -51,6 +55,7 @@ public class PostController {
         return new ResponseEntity<>(updatePost,HttpStatus.OK);
     }
 
+//    http://localhost:8080/api/categories/delete/2
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public String deletePost(@PathVariable("id") Long postId){
@@ -58,6 +63,7 @@ public class PostController {
         return "This post with this Id was delete successfully.";
     }
 
+//    http://localhost:8080/api/blog/category/4
     @GetMapping("/category/{id}")
     public ResponseEntity<List<PostDto>> getAllId(@PathVariable("id") Long categoryId){
         List<PostDto> postDto = postService.getPostByCategory(categoryId);
