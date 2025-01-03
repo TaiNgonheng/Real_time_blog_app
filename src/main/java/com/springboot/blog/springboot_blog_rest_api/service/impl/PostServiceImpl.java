@@ -38,6 +38,8 @@ public class PostServiceImpl implements PostService {
         return mapToPostDto(savedPost);
     }
 
+
+
     @Override
     public PostDto getById(Long postId) {
         Post getPost = postRepository.findById(postId).get();
@@ -67,9 +69,13 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto updatePost(Long postId, PostDto postDto) {
         Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("This Post Id are not found: "+postId));
+
+        Category category = categoryRepository.findById(postDto.getCategoryId()).orElseThrow(()-> new ResourceNotFoundException("Category","id",postDto.getCategoryId()));
+
         post.setTitle(postDto.getTitle());
         post.setDescription(postDto.getDescription());
         post.setContent(postDto.getContent());
+        post.setCategory(category);
         Post savedPost = postRepository.save(post);
         return mapToPostDto(savedPost);
     }
@@ -78,6 +84,14 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("This post with this Id are not found."));
         postRepository.delete(post);
     }
+
+    @Override
+    public List<PostDto> getPostByCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","id",categoryId));
+        List<Post> posts = postRepository.findByCategoryId(categoryId);
+        return posts.stream().map((post)->mapToPostDto(post)).collect(Collectors.toList());
+    }
+
     public Post mapToPost(PostDto postDto){
         Post post = mapper.map(postDto,Post.class);
 //        post.setId(postDto.getId());

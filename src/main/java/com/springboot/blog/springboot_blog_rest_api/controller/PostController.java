@@ -12,8 +12,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("api/blog")
+@RequestMapping("/api/blog")
 public class PostController {
     @Autowired
     private PostService postService;
@@ -25,7 +27,7 @@ public class PostController {
         return new ResponseEntity<>(create, HttpStatus.CREATED);
     }
 
-    @GetMapping("get/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<PostDto> getPostById(@PathVariable("id") Long postId){
         PostDto postDto = postService.getById(postId);
         return ResponseEntity.ok(postDto);
@@ -43,16 +45,22 @@ public class PostController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<PostDto> updatePost(@PathVariable("id") Long postId,@Valid @RequestBody PostDto postDto){
         PostDto updatePost = postService.updatePost(postId,postDto);
         return new ResponseEntity<>(updatePost,HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public String deletePost(@PathVariable("id") Long postId){
         postService.DeletePost(postId);
         return "This post with this Id was delete successfully.";
+    }
+
+    @GetMapping("/category/{id}")
+    public ResponseEntity<List<PostDto>> getAllId(@PathVariable("id") Long categoryId){
+        List<PostDto> postDto = postService.getPostByCategory(categoryId);
+        return ResponseEntity.ok(postDto);
     }
 }
