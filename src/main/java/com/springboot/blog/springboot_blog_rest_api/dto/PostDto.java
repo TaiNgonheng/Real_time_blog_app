@@ -28,6 +28,8 @@ public class PostDto {
     private String content;
     private Set<CommentDto> comments;
 
+    private Long categoryId;
+
     public PostDto(Long id, String title, String description, String content, Set<CommentDto> comments) {
         this.id = id;
         this.title = title;
