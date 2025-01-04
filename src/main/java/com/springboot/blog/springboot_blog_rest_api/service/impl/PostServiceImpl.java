@@ -38,8 +38,6 @@ public class PostServiceImpl implements PostService {
         return mapToPostDto(savedPost);
     }
 
-
-
     @Override
     public PostDto getById(Long postId) {
         Post getPost = postRepository.findById(postId).get();
