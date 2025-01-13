@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 @OpenAPIDefinition(
 		info = @Info(
 				title = "Spring boot Blog App Rest APIs",
-				description = "Spring boot Blog App Rest APIs Decumentation",
+				description = "Spring boot Blog App Rest APIs Documentation",
 				version = "v1.0",
 				contact = @Contact(
 						name = "Tai Ngonheng",

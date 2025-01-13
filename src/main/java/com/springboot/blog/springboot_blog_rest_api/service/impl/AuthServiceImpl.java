@@ -36,7 +36,6 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
     @Override
     public String login(LoginDto loginDto) {
        Authentication authentication= authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -71,5 +70,10 @@ public class AuthServiceImpl implements AuthService {
         user.setRoles(roles);
         userRepository.save(user);
         return "User register Successfully.";
+    }
+
+    @Override
+    public Set<?> name(LoginDto loginDto) {
+        return null;
     }
 }
